@@ -12,9 +12,9 @@ r2 = session.client(
     endpoint_url=os.environ['CloudFlareEndpoint_url']
 )
 
-def uploadImages(filePath):
+def uploadImages(filePath,userName,fileName):
     with open(filePath, "rb") as f:
-        r2.upload_fileobj(f, "ai-terrorism-detection-system", "file.jpg")
+        r2.upload_fileobj(f, "ai-terrorism-detection-system",f"{userName}/{fileName}.jpg")
         print("Upload complete.")
 
-uploadImages(r"C:\project\aiTds\gunDetection.jpg")
+uploadImages(r"C:\project\aiTds\gunDetection.jpg","bobby","deez")

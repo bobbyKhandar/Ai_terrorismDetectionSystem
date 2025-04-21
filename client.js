@@ -13,7 +13,7 @@ dns = document.cookie
   ?.split("=")[1];
 
 async function fetchToServer(dns) {
-  const response = await fetch("/test", {
+  const response = await fetch("http://127.0.0.1:5000/getToken", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -23,4 +23,4 @@ async function fetchToServer(dns) {
   const result = await response.json();
 }
 
-// fetchToServer(document.get);
+fetchToServer(dns,);

@@ -1,28 +1,13 @@
 from ultralytics import YOLO
-from dotenv import load_dotenv
-import os
-from twilio.rest import Client
+
 from datetime import datetime
+import messenger
+import os
 
-load_dotenv()
-
-
-
-
-def sendMessage(weapons):
-    account_sid = os.environ['twirlo_ssid']
-    auth_token = os.environ['auth_token']
-    client = Client(account_sid, auth_token)
-    message = client.messages.create(
-    # added an precausious message  
-        body="this message was generated through an project made by a btech student learning to detect weapons in real time basis all of the messages are through an simulated enviorment.\n "+weapons,
-        from_=os.environ["twirloContactNo"],
-        to=os.environ["userContactNo"],
-    )
 model = YOLO(r"C:\project\aiTds\best (1).pt")
 
-results = model(r"C:\project\aiTds\gunDetection.jpg")  # return a list of Results objects
 
+results = model(r"C:\project\aiTds\gunDetection.jpg")
 for result in results:
     boxes = result.boxes  # Boxes object for bounding box outputs
     masks = result.masks  # Masks object for segmentation masks outputs
@@ -34,7 +19,7 @@ for result in results:
     names = model.names
     print("boxes= \n")
     # lastSent=datetime(2012, 3, 5, 23, 8, 15) 
-    lastSent=datetime.now()
+    lastSent = datetime(1, 1, 1, 0, 0, 0)
     labelSet=""
     for r in results:
         for box in r.boxes:
@@ -49,8 +34,11 @@ for result in results:
         difference=currentTime-lastSent
         durationSeconds=difference.total_seconds()
         durationMinutes=difference.total_seconds()/60
+        print(durationMinutes)
         if durationMinutes>5:
-            sendMessage(labelSet)
+            lastSent=currentTime
+            print("hi")
+            messenger.sendMessage(os.environ["userContactNo"],"this message was generated through an project made by a btech student learning to detect weapons in real time basis all of the messages are through an simulated enviorment.\n "+labelSet)
         
 
 
